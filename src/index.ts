@@ -1,14 +1,36 @@
+import fastifyCors from "@fastify/cors"
+import fastifySwagger from "@fastify/swagger"
+import fastifySwaggerUi from "@fastify/swagger-ui"
 import fastify from "fastify"
-import { prisma } from "./utils/db/prisma.js"
+import {
+	serializerCompiler,
+	validatorCompiler,
+	type ZodTypeProvider,
+} from "fastify-type-provider-zod"
+import { Routes } from "./routes/index.js"
 import { env } from "./utils/env/index.js"
 
-const app = fastify()
+const app = fastify().withTypeProvider<ZodTypeProvider>()
 
-app.get("/listar", async () => {
-	const users = await prisma.user.findMany({})
-
-	return { users }
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
+app.register(fastifySwagger, {
+	openapi: {
+		info: {
+			title: "gym pass API",
+			version: "1.0",
+		},
+	},
 })
+app.register(fastifySwaggerUi, {
+	routePrefix: "/docs",
+})
+app.register(fastifyCors, {
+	origin: "*",
+	methods: ["post", "get", "put", "delete", "patch"],
+})
+
+app.register(Routes)
 
 app
 	.listen({
