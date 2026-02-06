@@ -1,7 +1,14 @@
-import fastify from "fastify";
-import { env } from "./utils/env/index.js";
+import fastify from "fastify"
+import { prisma } from "./utils/db/prisma.js"
+import { env } from "./utils/env/index.js"
 
-const app = fastify();
+const app = fastify()
+
+app.get("/listar", async () => {
+	const users = await prisma.user.findMany({})
+
+	return { users }
+})
 
 app
 	.listen({
@@ -9,5 +16,5 @@ app
 		host: "0.0.0.0",
 	})
 	.then(() => {
-		console.log(`Servidor rodando na porta ${env.PORT}`);
-	});
+		console.log(`Servidor rodando na porta ${env.PORT}`)
+	})
