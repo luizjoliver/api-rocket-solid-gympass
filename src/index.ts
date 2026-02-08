@@ -30,6 +30,19 @@ app.register(fastifyCors, {
 	methods: ["post", "get", "put", "delete", "patch"],
 })
 
+// app.setErrorHandler((error, _, reply) => {
+// 	if (error instanceof ZodError) {
+// 		return error
+// 	}
+
+// 	if (env.NODE_ENV !== "production") {
+// 		console.error(error)
+// 	} else {
+// 		//Sentry/DataLog
+// 	}
+// 	return reply.status(500).send({ message: "Internal Server Error" })
+// })
+
 app.register(Routes)
 
 app
