@@ -1,10 +1,10 @@
-import type { RegisterBody } from "@/routes/users/schemas/registerSchema.js"
+import type { authenticateUserBody } from "@/routes/authenticate/schemas/authenticateSchema.js"
 import { InvalidCredentialsError } from "@/use-cases/authenticate/errors/invalidCredentialsError.js"
 import { makeAuthenticateUseCase } from "@/use-cases/authenticate/factories/makeAuthenticateUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function authenticateUserController(
-	req: FastifyRequest<{ Body: RegisterBody }>,
+	req: FastifyRequest<{ Body: authenticateUserBody }>,
 	reply: FastifyReply,
 ) {
 	const { email, password } = req.body
