@@ -3,7 +3,7 @@ import { prisma } from "@/utils/db/prisma.js"
 import type { CheckInRepository } from "../interface/checkInsRepository.js"
 
 export class PrismaCheckInRepository implements CheckInRepository {
-	async create(data: CheckIn): Promise<CheckIn> {
+	async create(data: { userId: string; gymId: string }): Promise<CheckIn> {
 		const checkIn = await prisma.checkIn.create({
 			data: {
 				user_id: data.userId,
@@ -19,4 +19,6 @@ export class PrismaCheckInRepository implements CheckInRepository {
 			gymId: checkIn.gym_id,
 		}
 	}
+
+	findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {}
 }
