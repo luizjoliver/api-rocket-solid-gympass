@@ -1,7 +1,7 @@
 import type { User } from "@/models/User.js"
 import type { UsersRepository } from "@/repositories/interface/usersRepository.js"
 import { hash } from "bcryptjs"
-import { userAlreadyExistsError } from "./errors/index.js"
+import { UserAlreadyExistsError } from "./errors/index.js"
 
 interface RegisterUserServiceType {
 	password: string
@@ -25,8 +25,7 @@ export class RegisterUsersUseCase {
 
 		const userAlreadyExists = await this.usersRepository.findByEmail(email)
 
-		if (userAlreadyExists)
-			throw new userAlreadyExistsError("Um Usuário com este e-mail já existe!")
+		if (userAlreadyExists) throw new UserAlreadyExistsError()
 
 		const user = await this.usersRepository.create({
 			email,

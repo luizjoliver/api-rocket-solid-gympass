@@ -1,16 +1,19 @@
 import { InMemoryUsersRepository } from "@/repositories/inMemory/inMemoryUsersRepository.js"
 import { compare } from "bcryptjs"
-import { describe, expect, it } from "vitest"
-import { userAlreadyExistsError } from "./errors/index.js"
-import { RegisterUsersUseCase } from "./register-user.js"
+import { beforeEach, describe, expect, it } from "vitest"
+import { UserAlreadyExistsError } from "./errors/index.js"
+import { RegisterUsersUseCase } from "./registerUser.js"
+
+let usersRepository: InMemoryUsersRepository
+let registerUserUseCase: RegisterUsersUseCase
+
+beforeEach(() => {
+	usersRepository = new InMemoryUsersRepository()
+	registerUserUseCase = new RegisterUsersUseCase(usersRepository)
+})
 
 describe("Register User Tests", async () => {
 	it("should be able to register user", async () => {
-		const inMemoryUsersRepository = new InMemoryUsersRepository()
-		const registerUserUseCase = new RegisterUsersUseCase(
-			inMemoryUsersRepository,
-		)
-
 		const { user } = await registerUserUseCase.execute({
 			name: "Luiz Doe",
 			email: "LuizDoe@gmail.com",
@@ -29,10 +32,6 @@ describe("Register User Tests", async () => {
 	})
 
 	it("should hash user password when registering him", async () => {
-		const inMemoryUsersRepository = new InMemoryUsersRepository()
-		const registerUserUseCase = new RegisterUsersUseCase(
-			inMemoryUsersRepository,
-		)
 		const userPassword = "123456789"
 		const { user } = await registerUserUseCase.execute({
 			name: "Jhon Doe",
@@ -49,10 +48,6 @@ describe("Register User Tests", async () => {
 	})
 
 	it("should not be able to register the same email twice", async () => {
-		const inMemoryUsersRepository = new InMemoryUsersRepository()
-		const registerUserUseCase = new RegisterUsersUseCase(
-			inMemoryUsersRepository,
-		)
 		const email = "JhonDoe2@gmail.com"
 		await registerUserUseCase.execute({
 			name: "Jhon Doe2",
@@ -66,6 +61,6 @@ describe("Register User Tests", async () => {
 				email: email,
 				password: "1234567891",
 			}),
-		).rejects.toBeInstanceOf(userAlreadyExistsError)
+		).rejects.toBeInstanceOf(UserAlreadyExistsError)
 	})
 })
