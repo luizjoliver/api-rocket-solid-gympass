@@ -1,7 +1,6 @@
 import { PrismaGymRepository } from "@/repositories/prisma/prismaGymRepository.js"
 import type { RegisterGymBody } from "@/routes/gyms/schemas/registerSchema.js"
 import { CreateGymUseCase } from "@/use-cases/gym/createGym.js"
-import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function CreateGymController(
@@ -22,7 +21,8 @@ export async function CreateGymController(
 			phone: phone ?? null,
 		})
 	} catch (error) {
-		if (error instanceof UserAlreadyExistsError)
+		//Melhorar Erro
+		if (error instanceof Error)
 			reply.status(400).send({ message: error.message })
 
 		throw error
