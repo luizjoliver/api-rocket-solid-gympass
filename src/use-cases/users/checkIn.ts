@@ -2,6 +2,7 @@ import type { CheckIn } from "@/models/CheckIn.js"
 import type { CheckInRepository } from "@/repositories/interface/checkInsRepository.js"
 import type { GymRepository } from "@/repositories/interface/gymRepository.js"
 import { getDistanceBetweenCoordinates } from "@/utils/getDistanceBetweenCoordinates.js"
+import { MaxDistanceError, MaxNumberOfCheckIns } from "./errors/index.js"
 
 interface CheckInUseCaseRequest {
 	userId: string
@@ -38,7 +39,7 @@ export class CheckInUseCase {
 			},
 		)
 		const MAX_DISTANCE_IN_KM = 0.1
-		if (distance > MAX_DISTANCE_IN_KM) throw new Error("Não é possível fazer check-in estando a mais de 100 mestros de distancia da academia")
+		if (distance > MAX_DISTANCE_IN_KM) throw new MaxDistanceError()
 
 		const checkInSameDate = await this.checkInRepository.findByUserIdOnDate(
 			userId,
@@ -46,7 +47,7 @@ export class CheckInUseCase {
 		)
 
 		if (checkInSameDate)
-			throw new Error("Não é possível criar mais de um Check-in no Dia")
+			throw new MaxNumberOfCheckIns()
 
 		const checkIn = await this.checkInRepository.create({
 			userId,

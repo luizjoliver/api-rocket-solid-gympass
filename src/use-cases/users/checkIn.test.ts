@@ -1,7 +1,8 @@
 import { InMemoryCheckInsRepository } from "@/repositories/inMemory/inMemoryCheckInRepository.js"
-import { InMemoryGymRepository } from "@/repositories/inMemory/inMermoryGymRepository.js"
+import { InMemoryGymRepository } from "@/repositories/inMemory/inMemoryGymRepository.js"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { CheckInUseCase } from "./checkIn.js"
+import { MaxDistanceError } from "./errors/index.js"
 
 let checkInsRepository: InMemoryCheckInsRepository
 let gymRepository: InMemoryGymRepository
@@ -10,12 +11,20 @@ let sut: CheckInUseCase
 describe("Check-in Use Case", () => {
 	const gymId = "gym-01"
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		checkInsRepository = new InMemoryCheckInsRepository()
 		gymRepository = new InMemoryGymRepository()
 		sut = new CheckInUseCase(checkInsRepository, gymRepository)
 
 		gymRepository.items.push({
+			id: gymId,
+			latitude: 40.6892,
+			longitude: -74.0445,
+			title: "Academia javaScript",
+			description: "",
+		})
+
+		await gymRepository.create({
 			id: gymId,
 			latitude: 40.6892,
 			longitude: -74.0445,
@@ -83,6 +92,6 @@ describe("Check-in Use Case", () => {
 				userLatitude: -23.5525,
 				userLongitude: -46.6333,
 			}),
-		).rejects.toBeInstanceOf(Error)
+		).rejects.toBeInstanceOf(MaxDistanceError)
 	})
 })
