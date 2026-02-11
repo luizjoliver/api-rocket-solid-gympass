@@ -4,6 +4,6 @@ export interface Gym {
 	description?: string | null | undefined
 	phone?: string | null | undefined
 	latitude: number
-	longitude: number
+	longitude: number 
 	checkIns?: any
 }

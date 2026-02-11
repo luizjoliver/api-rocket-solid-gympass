@@ -4,8 +4,24 @@ import dayjs from "dayjs"
 import type { CheckInRepository } from "../interface/checkInsRepository.js"
 
 export class PrismaCheckInRepository implements CheckInRepository {
-	findManyByUserId(userId: string, page?: number): Promise<CheckIn[]> {
-		throw new Error("Method not implemented.")
+	async findManyByUserId(userId: string, page: number = 1): Promise<CheckIn[]> {
+		const checkIns = await prisma.checkIn.findMany({
+			where: {
+				user_id: userId,
+			},
+			orderBy: {
+				created_at: "desc", // histórico mais recente primeiro
+			},
+			take: 20,
+			skip: (page - 1) * 20,
+		})
+
+		return checkIns.map((checkIn) => ({
+			id: checkIn.id,
+			userId: checkIn.user_id,
+			gymId: checkIn.gym_id,
+			createdAt: checkIn.created_at,
+		}))
 	}
 	async create(data: { userId: string; gymId: string }): Promise<CheckIn> {
 		const checkIn = await prisma.checkIn.create({

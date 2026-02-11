@@ -1,6 +1,10 @@
 import type { Gym } from "@/models/Gym.js"
+import { getDistanceBetweenCoordinates } from "@/utils/getDistanceBetweenCoordinates.js"
 import { randomUUID } from "node:crypto"
-import type { GymRepository } from "../interface/gymRepository.js"
+import type {
+	FindManyNearbyParams,
+	GymRepository,
+} from "../interface/gymRepository.js"
 
 export class InMemoryGymRepository implements GymRepository {
 	public items: Gym[] = []
@@ -28,5 +32,28 @@ export class InMemoryGymRepository implements GymRepository {
 		this.items.push(gym)
 
 		return gym
+	}
+	async searchMany(query: string, page: number) {
+		const filteredGyms = this.items.filter((gym) =>
+			gym.title.toLowerCase().includes(query.toLowerCase()),
+		)
+
+		const gyms = filteredGyms.slice((page - 1) * 20, page * 20)
+
+		return gyms
+	}
+
+	async searchManyNearby(params: FindManyNearbyParams) {
+		return this.items.filter((item) => {
+			const distance = getDistanceBetweenCoordinates(
+				{ latitude: params.latitude, longitude: params.longitude },
+				{
+					latitude: item.latitude,
+					longitude: item.longitude,
+				},
+			)
+
+			return distance < 10
+		})
 	}
 }
