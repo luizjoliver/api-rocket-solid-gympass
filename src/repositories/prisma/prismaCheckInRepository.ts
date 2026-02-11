@@ -77,4 +77,41 @@ export class PrismaCheckInRepository implements CheckInRepository {
 
 		return count
 	}
+
+	async findById(id: string): Promise<CheckIn | null> {
+		const checkIn = await prisma.checkIn.findUnique({
+			where: {
+				id,
+			},
+		})
+
+		if (!checkIn) return null
+
+		return {
+			id: checkIn.id,
+			userId: checkIn.user_id,
+			gymId: checkIn.gym_id,
+			createdAt: checkIn.created_at,
+			validatedAt: checkIn.validated_at,
+		}
+	}
+
+	async save(checkIn: CheckIn): Promise<CheckIn> {
+		const updatedCheckIn = await prisma.checkIn.update({
+			where: {
+				id: checkIn.id as string,
+			},
+			data: {
+				validated_at: checkIn.validatedAt as Date,
+			},
+		})
+
+		return {
+			id: updatedCheckIn.id,
+			userId: updatedCheckIn.user_id,
+			gymId: updatedCheckIn.gym_id,
+			createdAt: updatedCheckIn.created_at,
+			validatedAt: updatedCheckIn.validated_at,
+		}
+	}
 }
