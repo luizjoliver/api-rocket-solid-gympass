@@ -46,7 +46,7 @@ describe("Get User Check-ins History Use Case", () => {
 
 		const { checkIns } = await sut.execute({
 			userId: USER_ID,
-            page:2
+			page: 2,
 		})
 
 		expect(checkIns).toHaveLength(2)

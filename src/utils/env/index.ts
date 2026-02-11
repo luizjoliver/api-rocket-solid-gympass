@@ -1,5 +1,5 @@
-import "dotenv/config";
-import z from "zod";
+import "dotenv/config"
+import z from "zod"
 
 const envSchema = z.object({
 	PORT: z.coerce.number().default(3333),
@@ -7,15 +7,13 @@ const envSchema = z.object({
 	NODE_ENV: z
 		.enum(["development", "test", "production"])
 		.default("development"),
-});
+})
 
-const _env = envSchema.safeParse(process.env);
+const _env = envSchema.safeParse(process.env)
 
 if (!_env.success) {
-	console.error("Variáveis de ambiente inválidas");
-	throw new Error(
-		"Erro nas variaveis de ambiente , verifique seu arquivo .env",
-	);
+	console.error("Variáveis de ambiente inválidas")
+	throw new Error("Erro nas variaveis de ambiente , verifique seu arquivo .env")
 }
 
-export const env = _env.data;
+export const env = _env.data

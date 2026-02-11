@@ -46,8 +46,7 @@ export class CheckInUseCase {
 			new Date(),
 		)
 
-		if (checkInSameDate)
-			throw new MaxNumberOfCheckIns()
+		if (checkInSameDate) throw new MaxNumberOfCheckIns()
 
 		const checkIn = await this.checkInRepository.create({
 			userId,

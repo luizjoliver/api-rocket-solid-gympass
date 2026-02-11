@@ -1,5 +1,5 @@
 import { InMemoryCheckInsRepository } from "@/repositories/inMemory/inMemoryCheckInRepository.js"
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { ValidateCheckInUseCase } from "./validateCheckIn.js"
 
 let checkInsRepository: InMemoryCheckInsRepository
@@ -35,6 +35,25 @@ describe("Validate Check-in Use Case", () => {
 		await expect(() =>
 			sut.execute({
 				checkInId: "inexistent-check-in-id",
+			}),
+		).rejects.toBeInstanceOf(Error)
+	})
+
+	it("should not be able to validate the check-in after 20 minutes of its creation", async () => {
+		vi.setSystemTime(new Date(2023, 0, 1, 13, 40))
+
+		const createdCheckIn = await checkInsRepository.create({
+			gymId: "gym-01",
+			userId: "user-01",
+		})
+
+		const twentyOneMinutesInMs = 1000 * 60 * 21
+
+		vi.advanceTimersByTime(twentyOneMinutesInMs)
+
+		await expect(() =>
+			sut.execute({
+				checkInId: createdCheckIn.id as string,
 			}),
 		).rejects.toBeInstanceOf(Error)
 	})

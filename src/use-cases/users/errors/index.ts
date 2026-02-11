@@ -17,3 +17,9 @@ export class MaxNumberOfCheckIns extends Error {
 		super("Não é possível criar mais de um Check-in no Dia")
 	}
 }
+
+export class LateCheckInValidationError extends Error {
+	constructor() {
+		super("O Check In pode ser validado até 20 minutos após a sua criação.")
+	}
+}

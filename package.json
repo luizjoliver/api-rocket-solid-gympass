@@ -9,6 +9,7 @@
 		"start": "node build/index.cjs",
 		"format": "biome format --write",
 		"test": "vitest run",
+		"lint": "biome lint src",
 		"coverage": "vitest run --coverage"
 	},
 	"type": "module",
