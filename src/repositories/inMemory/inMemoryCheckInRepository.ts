@@ -5,22 +5,20 @@ import type { CheckInRepository } from "../interface/checkInsRepository.js"
 
 export class InMemoryCheckInsRepository implements CheckInRepository {
 	public items: CheckIn[] = []
-	async findByUserIdOnDate(
-		userId: string,
-		date: Date,
-	): Promise<CheckIn | null> {
+	async findByUserIdOnDate(userId: string, date: Date) {
+		const startOfDay = dayjs(date).startOf("day")
+		const endOfDay = dayjs(date).endOf("day")
+
 		const checkInOnSameDate = this.items.find((checkIn) => {
-			const endOfTheDay = dayjs(date).endOf("date")
 			const checkInDate = dayjs(checkIn.createdAt)
 
-			const isOnOtherDay = checkInDate.isAfter(endOfTheDay)
+			const isOnSameDay =
+				checkInDate.isAfter(startOfDay) && checkInDate.isBefore(endOfDay)
 
-			return checkIn.userId === userId && isOnOtherDay
+			return checkIn.userId === userId && isOnSameDay
 		})
 
-		if (!checkInOnSameDate) return null
-
-		return checkInOnSameDate
+		return checkInOnSameDate ?? null
 	}
 	async create({ userId, gymId }: { userId: string; gymId: string }) {
 		const checkIn: CheckIn = {
@@ -34,5 +32,11 @@ export class InMemoryCheckInsRepository implements CheckInRepository {
 		this.items.push(checkIn)
 
 		return checkIn
+	}
+
+	async findManyByUserId(userId: string, page: number) {
+		return this.items
+			.filter((checkin) => checkin.userId === userId)
+			.slice((page - 1) * 20, 40)
 	}
 }
