@@ -22,7 +22,25 @@ export async function authenticateUserController(
 			},
 		)
 
-		return reply.status(200).send({
+			const refreshToken = await reply.jwtSign(
+			{},
+			{
+				sign: {
+					sub: user.id as string,
+					expiresIn:"3d"
+				},
+			},
+		)
+
+		return reply
+		.setCookie("refreshToken",refreshToken,{
+			path:"/",
+			secure:true,
+			sameSite:true,
+			httpOnly:true
+		})
+		.status(200)
+		.send({
 			token,
 		})
 	} catch (error) {

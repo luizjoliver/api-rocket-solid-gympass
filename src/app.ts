@@ -1,3 +1,4 @@
+import fastifyCookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
 import fastifyJwt from "@fastify/jwt"
 import fastifySwagger from "@fastify/swagger"
@@ -31,8 +32,17 @@ app.register(fastifyCors, {
 	methods: ["post", "get", "put", "delete", "patch"],
 })
 
+app.register(fastifyCookie)
+
 app.register(fastifyJwt, {
 	secret: process.env.JWT_SECRET as string,
+	cookie: {
+		cookieName: "refreshToken",
+		signed: false,
+	},
+	sign: {
+		expiresIn: "10m",
+	},
 })
 
 app.register(Routes)
