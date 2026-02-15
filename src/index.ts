@@ -11,7 +11,7 @@ import {
 import { Routes } from "./routes/index.js"
 import { env } from "./utils/env/index.js"
 
-const app = fastify().withTypeProvider<ZodTypeProvider>()
+export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
