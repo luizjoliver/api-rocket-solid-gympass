@@ -16,7 +16,6 @@ export async function SearchGymController(
 	const { query, page } = searchGymQuerySchema.parse(req.query)
 
 	try {
-		
 		const searchGymUseCase = makeSearchGymUseCase()
 
 		const { gyms } = await searchGymUseCase.execute({

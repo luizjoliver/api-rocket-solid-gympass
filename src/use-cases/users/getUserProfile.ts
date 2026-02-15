@@ -17,6 +17,14 @@ export class GetUserProfileUseCase {
 
 		if (!user) throw new Error("Recurso não encontrado")
 
-		return { user }
+		return {
+			user: {
+				email: user.email,
+				name: user.name,
+				CheckIns: user.CheckIns,
+				created_at: user.created_at,
+				id: user.id,
+			} as User,
+		}
 	}
 }

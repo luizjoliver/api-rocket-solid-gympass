@@ -1,4 +1,5 @@
 import fastifyCors from "@fastify/cors"
+import fastifyJwt from "@fastify/jwt"
 import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUi from "@fastify/swagger-ui"
 import fastify from "fastify"
@@ -42,6 +43,10 @@ app.register(fastifyCors, {
 // 	}
 // 	return reply.status(500).send({ message: "Internal Server Error" })
 // })
+
+app.register(fastifyJwt, {
+	secret: env.JWT_SECRET,
+})
 
 app.register(Routes)
 

@@ -1,4 +1,4 @@
-import { authenticateUserController } from "@/controllers/users/authenticate.js"
+import { authenticateUserController } from "@/http/controllers/users/authenticate.js"
 import type { FastifyInstanceType } from "@/models/types/index.js"
 import { authenticateUserBodySchema } from "./schemas/authenticateSchema.js"
 

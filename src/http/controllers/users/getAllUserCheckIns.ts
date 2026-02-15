@@ -20,7 +20,6 @@ export async function getAllUserCheckInHistoryController(
 	const { page } = getAllUserCheckInQuery.parse(req.query)
 
 	try {
-		
 		const checkInUseCase = makeGetUserCheckInsHistoryUseCase()
 
 		const checkIn = await checkInUseCase.execute({

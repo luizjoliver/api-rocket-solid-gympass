@@ -1,3 +1,4 @@
+import "@fastify/jwt"
 import type {
 	FastifyBaseLogger,
 	FastifyInstance,
@@ -14,3 +15,11 @@ export type FastifyInstanceType = FastifyInstance<
 	FastifyBaseLogger,
 	ZodTypeProvider
 >
+
+declare module "@fastify/jwt" {
+	interface FastifyJWT {
+		user: {
+			sub: string
+		}
+	}
+}

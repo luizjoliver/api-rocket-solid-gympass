@@ -40,10 +40,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 		}
 	}
 
-	async findByUserIdOnDate(
-		userId: string,
-		date: Date,
-	) {
+	async findByUserIdOnDate(userId: string, date: Date) {
 		const startOfDay = dayjs(date).startOf("day").toDate()
 		const endOfDay = dayjs(date).endOf("day").toDate()
 
