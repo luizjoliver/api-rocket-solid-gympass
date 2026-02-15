@@ -4,6 +4,7 @@ import {
 	searchGymQuerySchema,
 } from "@/routes/gyms/schemas/searchSchema.js"
 import { SearchGymUseCase } from "@/use-cases/gym/search.js"
+import { makeSearchGymUseCase } from "@/use-cases/users/factories/makeSearchGymUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function SearchGymController(
@@ -15,8 +16,8 @@ export async function SearchGymController(
 	const { query, page } = searchGymQuerySchema.parse(req.query)
 
 	try {
-		const gymRepository = new PrismaGymRepository()
-		const searchGymUseCase = new SearchGymUseCase(gymRepository)
+		
+		const searchGymUseCase = makeSearchGymUseCase()
 
 		const { gyms } = await searchGymUseCase.execute({
 			query,

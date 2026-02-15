@@ -1,6 +1,5 @@
 import type { Gym } from "@/models/Gym.js"
 import { prisma } from "@/utils/db/prisma.js"
-import { getDistanceBetweenCoordinates } from "@/utils/getDistanceBetweenCoordinates.js"
 import { Prisma } from "generated/prisma/browser.js"
 import type {
 	FindManyNearbyParams,
@@ -79,27 +78,12 @@ export class PrismaGymRepository implements GymRepository {
 		latitude,
 		longitude,
 	}: FindManyNearbyParams): Promise<Gym[]> {
-		const gyms = await prisma.gym.findMany()
+		const MAX_DISTANCE_IN_KM = 10
+		const gyms = await prisma.$queryRaw<Gym[]>`
+		SELECT * from gyms
+WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= ${MAX_DISTANCE_IN_KM}
+		`
 
-		const nearbyGyms = gyms.filter((gym) => {
-			const distance = getDistanceBetweenCoordinates(
-				{ latitude, longitude },
-				{
-					latitude: gym.latitude.toNumber(),
-					longitude: gym.longitude.toNumber(),
-				},
-			)
-
-			return distance < 10 // 10km de raio
-		})
-
-		return nearbyGyms.map((gym) => ({
-			id: gym.id,
-			title: gym.title,
-			description: gym.description,
-			phone: gym.phone,
-			latitude: gym.latitude.toNumber(),
-			longitude: gym.longitude.toNumber(),
-		}))
+		return gyms
 	}
 }

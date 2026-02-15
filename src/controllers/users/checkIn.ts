@@ -1,8 +1,6 @@
-import { PrismaCheckInRepository } from "@/repositories/prisma/prismaCheckInRepository.js"
-import { PrismaGymRepository } from "@/repositories/prisma/prismaGymRepository.js"
 import type { CreateCheckInBody } from "@/routes/users/schemas/createCheckInSchema.js"
-import { CheckInUseCase } from "@/use-cases/users/checkIn.js"
 import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
+import { makeCheckInUseCase } from "@/use-cases/users/factories/makeCheckInUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function createCheckInController(
@@ -12,9 +10,7 @@ export async function createCheckInController(
 	const { gymId, userId, userLatitude, userLongitude } = req.body
 
 	try {
-		const prismaRepository = new PrismaCheckInRepository()
-		const gymRepository = new PrismaGymRepository()
-		const checkInUseCase = new CheckInUseCase(prismaRepository, gymRepository)
+		const checkInUseCase = makeCheckInUseCase()
 		const checkIn = await checkInUseCase.execute({
 			gymId,
 			userId,

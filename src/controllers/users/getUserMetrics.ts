@@ -1,6 +1,5 @@
-import { PrismaCheckInRepository } from "@/repositories/prisma/prismaCheckInRepository.js"
 import type { GetAllUserMetrics } from "@/routes/users/schemas/getAllUserMetrics.js"
-import { GetUserMetricsUseCase } from "@/use-cases/users/getUserMetrics.js"
+import { makeGetUserMetricsUseCase } from "@/use-cases/users/factories/makeGetUserMetricsUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function getAllUserMetricsController(
@@ -12,9 +11,7 @@ export async function getAllUserMetricsController(
 	const { userId } = req.params
 
 	try {
-		const prismaRepository = new PrismaCheckInRepository()
-
-		const checkInUseCase = new GetUserMetricsUseCase(prismaRepository)
+		const checkInUseCase = makeGetUserMetricsUseCase()
 		const checkInMetrics = await checkInUseCase.execute({
 			userId,
 		})

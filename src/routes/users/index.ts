@@ -12,6 +12,7 @@ import {
 import { getAllUserMetrics } from "./schemas/getAllUserMetrics.js"
 import { getUserByIdParams } from "./schemas/getUserByIdSchema.js"
 import { registerBodySchema } from "./schemas/registerSchema.js"
+import { profileUsersController } from "@/controllers/users/profile.js"
 
 export function UsersRoutes(app: FastifyInstanceType) {
 	app.post(
@@ -48,4 +49,8 @@ export function UsersRoutes(app: FastifyInstanceType) {
 		},
 		getAllUserMetricsController,
 	)
+
+
+	//authenticated
+	app.get("/me",profileUsersController)
 }

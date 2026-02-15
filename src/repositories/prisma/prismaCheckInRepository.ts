@@ -4,7 +4,7 @@ import dayjs from "dayjs"
 import type { CheckInRepository } from "../interface/checkInsRepository.js"
 
 export class PrismaCheckInRepository implements CheckInRepository {
-	async findManyByUserId(userId: string, page: number = 1): Promise<CheckIn[]> {
+	async findManyByUserId(userId: string, page: number = 1) {
 		const checkIns = await prisma.checkIn.findMany({
 			where: {
 				user_id: userId,
@@ -23,7 +23,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 			createdAt: checkIn.created_at,
 		}))
 	}
-	async create(data: { userId: string; gymId: string }): Promise<CheckIn> {
+	async create(data: { userId: string; gymId: string }) {
 		const checkIn = await prisma.checkIn.create({
 			data: {
 				user_id: data.userId,
@@ -43,7 +43,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 	async findByUserIdOnDate(
 		userId: string,
 		date: Date,
-	): Promise<CheckIn | null> {
+	) {
 		const startOfDay = dayjs(date).startOf("day").toDate()
 		const endOfDay = dayjs(date).endOf("day").toDate()
 
@@ -68,7 +68,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 		}
 	}
 
-	async countByUserId(userId: string): Promise<number> {
+	async countByUserId(userId: string) {
 		const count = await prisma.checkIn.count({
 			where: {
 				user_id: userId,
@@ -78,7 +78,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 		return count
 	}
 
-	async findById(id: string): Promise<CheckIn | null> {
+	async findById(id: string) {
 		const checkIn = await prisma.checkIn.findUnique({
 			where: {
 				id,
@@ -96,7 +96,7 @@ export class PrismaCheckInRepository implements CheckInRepository {
 		}
 	}
 
-	async save(checkIn: CheckIn): Promise<CheckIn> {
+	async save(checkIn: CheckIn) {
 		const updatedCheckIn = await prisma.checkIn.update({
 			where: {
 				id: checkIn.id as string,

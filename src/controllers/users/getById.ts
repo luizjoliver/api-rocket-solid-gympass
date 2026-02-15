@@ -1,6 +1,6 @@
 import type { GetUserById } from "@/routes/users/schemas/getUserByIdSchema.js"
 import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
-import { makeGetUserProfile } from "@/use-cases/users/factories/makeGetUserProfile.js"
+import { makeGetUserProfileUseCase } from "@/use-cases/users/factories/makeGetUserProfileUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function getUserByIdController(
@@ -10,7 +10,7 @@ export async function getUserByIdController(
 	const { userId } = req.params
 
 	try {
-		const getUserProfileUseCase = makeGetUserProfile()
+		const getUserProfileUseCase = makeGetUserProfileUseCase()
 
 		const user = await getUserProfileUseCase.execute({ userId })
 

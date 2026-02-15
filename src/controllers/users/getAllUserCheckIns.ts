@@ -5,6 +5,7 @@ import {
 	getAllUserCheckInParams,
 	getAllUserCheckInQuery,
 } from "@/routes/users/schemas/getAllUserCheckIns.js"
+import { makeGetUserCheckInsHistoryUseCase } from "@/use-cases/users/factories/makeGetUserCheckInsHistoryUseCase.js"
 import { GetUserCheckInsHistoryUseCase } from "@/use-cases/users/getUserCheckInsHistory.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
@@ -19,8 +20,8 @@ export async function getAllUserCheckInHistoryController(
 	const { page } = getAllUserCheckInQuery.parse(req.query)
 
 	try {
-		const prismaRepository = new PrismaCheckInRepository()
-		const checkInUseCase = new GetUserCheckInsHistoryUseCase(prismaRepository)
+		
+		const checkInUseCase = makeGetUserCheckInsHistoryUseCase()
 
 		const checkIn = await checkInUseCase.execute({
 			userId,
