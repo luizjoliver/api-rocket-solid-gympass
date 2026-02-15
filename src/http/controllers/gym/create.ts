@@ -1,4 +1,4 @@
-import type { RegisterGymBody } from "@/routes/gyms/schemas/registerSchema.js"
+import type { RegisterGymBody } from "@/http/routes/gyms/schemas/registerSchema.js"
 import { makeCreateGymUseCase } from "@/use-cases/users/factories/makeCreateGymUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 

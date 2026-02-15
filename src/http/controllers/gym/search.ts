@@ -1,9 +1,7 @@
-import { PrismaGymRepository } from "@/repositories/prisma/prismaGymRepository.js"
 import {
 	type SearchGymQuery,
 	searchGymQuerySchema,
-} from "@/routes/gyms/schemas/searchSchema.js"
-import { SearchGymUseCase } from "@/use-cases/gym/search.js"
+} from "@/http/routes/gyms/schemas/searchSchema.js"
 import { makeSearchGymUseCase } from "@/use-cases/users/factories/makeSearchGymUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 

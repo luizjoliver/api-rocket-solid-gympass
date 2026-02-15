@@ -1,5 +1,5 @@
 import { prisma } from "@/utils/db/prisma.js"
-import { env } from "@/utils/env/index.js"
+import "dotenv/config"
 import { execSync } from "node:child_process"
 import { randomUUID } from "node:crypto"
 
@@ -7,8 +7,8 @@ import type { Environment } from "vitest/environments"
 
 
 function generateDataBaseUrl(schema:string){
-    if(!env.DATABASE_URL) throw new Error("Forneça a variavel de ambiente responsável pela conexão do banco de dados")
-        const databaseUrl = env.DATABASE_URL
+    if(!process.env.DATABASE_URL) throw new Error("Forneça a variavel de ambiente responsável pela conexão do banco de dados")
+        const databaseUrl = process.env.DATABASE_URL
         const url = new URL( databaseUrl)
 
         url.searchParams.set("schema",schema)
@@ -24,9 +24,8 @@ export default <Environment>{
        const schema= randomUUID()
        const databaseUrl = generateDataBaseUrl(schema)
 
-       console.log(databaseUrl);
        
-       env.DATABASE_URL = databaseUrl
+       process.env.DATABASE_URL = databaseUrl
 
        execSync("pnpm exec prisma db push")
 

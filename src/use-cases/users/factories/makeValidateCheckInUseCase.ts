@@ -1,5 +1,4 @@
 import { PrismaCheckInRepository } from "@/repositories/prisma/prismaCheckInRepository.js"
-import { GetUserCheckInsHistoryUseCase } from "../getUserCheckInsHistory.js"
 import { ValidateCheckInUseCase } from "../validateCheckIn.js"
 
 export function makeValidateCheckInUseCase() {

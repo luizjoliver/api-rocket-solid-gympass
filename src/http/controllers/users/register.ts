@@ -1,4 +1,4 @@
-import type { RegisterBody } from "@/routes/users/schemas/registerSchema.js"
+import type { RegisterBody } from "@/http/routes/users/schemas/registerSchema.js"
 import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
 import { makeRegisterUseCase } from "@/use-cases/users/factories/makeRegisterUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"

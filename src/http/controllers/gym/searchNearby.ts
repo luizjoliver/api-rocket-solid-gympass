@@ -1,7 +1,7 @@
 import {
 	type SearchNearbyGymQuery,
 	searchNearbyGymQuerySchema,
-} from "@/routes/gyms/schemas/searchyNearbySchema.js"
+} from "@/http/routes/gyms/schemas/searchyNearbySchema.js"
 import { makeSearchGymNearbyUseCase } from "@/use-cases/users/factories/makeSearchNearbyGymUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 

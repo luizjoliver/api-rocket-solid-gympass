@@ -1,8 +1,3 @@
-import type { CreateCheckInBody } from "@/routes/users/schemas/createCheckInSchema.js"
-import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
-import { makeValidateCheckInUseCase } from "@/use-cases/users/factories/makeValidateCheckInUseCase.js"
-import type { FastifyReply, FastifyRequest } from "fastify"
-
 // export async function validateCheckInController(
 // 	req: FastifyRequest<{ Body: CreateCheckInBody }>,
 // 	reply: FastifyReply,

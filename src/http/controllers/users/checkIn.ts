@@ -1,4 +1,4 @@
-import type { CreateCheckInBody } from "@/routes/users/schemas/createCheckInSchema.js"
+import type { CreateCheckInBody } from "@/http/routes/checkins/schemas/createCheckInSchema.js"
 import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
 import { makeCheckInUseCase } from "@/use-cases/users/factories/makeCheckInUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"

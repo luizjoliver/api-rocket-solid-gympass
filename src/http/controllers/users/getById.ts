@@ -1,13 +1,13 @@
-import type { GetUserById } from "@/routes/users/schemas/getUserByIdSchema.js"
+import { getUserByIdParams } from "@/http/routes/users/schemas/getUserByIdSchema.js"
 import { UserAlreadyExistsError } from "@/use-cases/users/errors/index.js"
 import { makeGetUserProfileUseCase } from "@/use-cases/users/factories/makeGetUserProfileUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function getUserByIdController(
-	req: FastifyRequest<{ Params: GetUserById }>,
+	req: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { userId } = req.params
+	const { userId } = getUserByIdParams.parse(req.params)
 
 	try {
 		const getUserProfileUseCase = makeGetUserProfileUseCase()

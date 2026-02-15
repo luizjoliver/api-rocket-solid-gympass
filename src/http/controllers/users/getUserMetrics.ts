@@ -1,4 +1,4 @@
-import type { GetAllUserMetrics } from "@/routes/users/schemas/getAllUserMetrics.js"
+import type { GetAllUserMetrics } from "@/http/routes/checkins/schemas/getAllUserMetrics.js"
 import { makeGetUserMetricsUseCase } from "@/use-cases/users/factories/makeGetUserMetricsUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 

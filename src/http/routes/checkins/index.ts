@@ -1,9 +1,7 @@
 import { createCheckInController } from "@/http/controllers/users/checkIn.js"
 import { getAllUserCheckInHistoryController } from "@/http/controllers/users/getAllUserCheckIns.js"
-import { getUserByIdController } from "@/http/controllers/users/getById.js"
 import { getAllUserMetricsController } from "@/http/controllers/users/getUserMetrics.js"
-import { profileUsersController } from "@/http/controllers/users/profile.js"
-import { registerUserController } from "@/http/controllers/users/register.js"
+import { validateCheckInController } from "@/http/controllers/users/validateCheckIn.js"
 import { verifyJWT } from "@/http/middlewares/vertifiy-jwt.js"
 import type { FastifyInstanceType } from "@/models/types/index.js"
 import { createCheckInBody } from "./schemas/createCheckInSchema.js"
@@ -12,27 +10,25 @@ import {
 	getAllUserCheckInQuery,
 } from "./schemas/getAllUserCheckIns.js"
 import { getAllUserMetrics } from "./schemas/getAllUserMetrics.js"
-import { getUserByIdParams } from "./schemas/getUserByIdSchema.js"
-import { registerBodySchema } from "./schemas/registerSchema.js"
+import { validateCheckInParams } from "./schemas/validateCheckInSchema.js"
 
-export function UsersRoutes(app: FastifyInstanceType) {
+export function CheckInRoutes(app: FastifyInstanceType) {
+	app.addHook("onRequest", verifyJWT)
+
 	app.post(
-		"/users",
-		{ schema: { body: registerBodySchema } },
-		registerUserController,
-	)
-	app.post(
-		"/user/:userId/checkins",
+		"/checkins",
 		{ schema: { body: createCheckInBody } },
 		createCheckInController,
 	)
-	app.get(
-		"/user/:userId",
-		{ schema: { params: getUserByIdParams } },
-		getUserByIdController,
+
+	app.patch(
+		"/checkins/:checkInId/validate",
+		{ schema: { params: validateCheckInParams } },
+		validateCheckInController,
 	)
+
 	app.get(
-		"/user/history/:userId",
+		"/checkins/history/:userId",
 		{
 			schema: {
 				params: getAllUserCheckInParams,
@@ -41,22 +37,14 @@ export function UsersRoutes(app: FastifyInstanceType) {
 		},
 		getAllUserCheckInHistoryController,
 	)
+
 	app.get(
-		"/user/metrics/:userId",
+		"/checkins/metrics/:userId",
 		{
 			schema: {
 				params: getAllUserMetrics,
 			},
 		},
 		getAllUserMetricsController,
-	)
-
-	//authenticated
-	app.get(
-		"/me",
-		{
-			onRequest: verifyJWT,
-		},
-		profileUsersController,
 	)
 }

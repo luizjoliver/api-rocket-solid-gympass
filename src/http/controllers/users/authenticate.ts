@@ -1,4 +1,4 @@
-import type { authenticateUserBody } from "@/routes/authenticate/schemas/authenticateSchema.js"
+import type { authenticateUserBody } from "@/http/routes/authenticate/schemas/authenticateSchema.js"
 import { InvalidCredentialsError } from "@/use-cases/authenticate/errors/invalidCredentialsError.js"
 import { makeAuthenticateUseCase } from "@/use-cases/authenticate/factories/makeAuthenticateUseCase.js"
 import type { FastifyReply, FastifyRequest } from "fastify"

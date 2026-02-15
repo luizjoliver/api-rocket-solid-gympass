@@ -1,12 +1,10 @@
-import { PrismaCheckInRepository } from "@/repositories/prisma/prismaCheckInRepository.js"
 import {
 	type GetAllUserCheckInParams,
 	type GetAllUserCheckInQuery,
 	getAllUserCheckInParams,
 	getAllUserCheckInQuery,
-} from "@/routes/users/schemas/getAllUserCheckIns.js"
+} from "@/http/routes/checkins/schemas/getAllUserCheckIns.js"
 import { makeGetUserCheckInsHistoryUseCase } from "@/use-cases/users/factories/makeGetUserCheckInsHistoryUseCase.js"
-import { GetUserCheckInsHistoryUseCase } from "@/use-cases/users/getUserCheckInsHistory.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 export async function getAllUserCheckInHistoryController(
